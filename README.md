@@ -1,85 +1,65 @@
-# AI Surveillance Detection
+# AI Surveillance System
 
-## Overview
-AI Surveillance Detection is a real-time system designed to enhance security by identifying suspicious or prohibited behaviors, such as using phones while driving or engaging in violent activities, through video surveillance. The project leverages advanced deep learning techniques for object detection, pose estimation, and temporal analysis.
+## Repository Name
+`AI-Surveillance-System`
+
+## Description
+This project implements an AI-based surveillance system that uses advanced computer vision techniques to detect and report specific behaviors, such as phone usage while driving. The system processes video feeds in real-time, detects objects and poses using YOLO models, and generates detailed PDF reports when specific events are detected.
 
 ## Features
-- **Real-time detection**: Identifies behaviors like phone usage, violent actions, and more in live video feeds.
-- **Multi-class detection**: Supports detection of multiple actions within the same framework.
-- **Advanced algorithms**: Utilizes YOLO models for object detection and pose estimation for behavior analysis.
-- **Automated reporting**: Generates professional PDF reports for each detected incident, including timestamp, location, and image evidence.
+- **Object Detection**: Identifies objects such as cell phones using YOLOv8.
+- **Pose Estimation**: Detects human keypoints and calculates slopes and distances for advanced analysis.
+- **Alert System**: Triggers alerts when predefined behaviors (e.g., phone usage) are detected.
+- **PDF Reporting**: Automatically generates professional PDF reports with detection details and annotated frames.
+- **Multithreading**: Handles video processing efficiently with threading.
 
-## Key Technologies
-- **YOLOv8**: Used for object detection and classification.
-- **YOLO-Pose**: Applied for pose estimation to analyze human keypoints.
-- **Python & OpenCV**: Core programming languages for video processing and analysis.
-- **ReportLab**: Used to generate PDF reports of detected activities.
+## Dependencies
+- Python 3.10+
+- OpenCV
+- Supervision (sv)
+- Ultralytics YOLO
+- ReportLab
+- NumPy
 
-## Project Structure
-```plaintext
-├── data/                      # Dataset and preprocessed data
-├── models/                    # Trained models and YOLO weights
-├── src/                       # Source code for the project
-│   ├── video_processing.py    # Video processing and detection logic
-│   ├── report_generator.py    # Generates detailed PDF reports
-│   └── utils/                 # Utility functions
-├── output/                    # Generated reports and results
-└── README.md                  # Project documentation (this file)
-```
+## How It Works
+1. **Model Initialization**:
+   - Two YOLO models are loaded: one for object detection (`yolov8s.pt`) and another for pose estimation (`yolov8s-pose.pt`).
 
-## Installation
-### Prerequisites
-- Python 3.8+
-- pip package manager
-- GPU with CUDA support (optional, for faster inference)
+2. **Video Processing**:
+   - The system reads video frames and resizes them for consistent processing.
+   - Key objects (e.g., cell phones) and poses (e.g., wrists, nose, ears) are detected in the frames.
 
-### Steps
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/AI-Surveillance-Detection.git
-   cd AI-Surveillance-Detection
-   ```
+3. **Behavior Analysis**:
+   - Calculates distances and slopes between detected keypoints and objects.
+   - Identifies behaviors like phone usage based on these calculations.
 
-2. Install required packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
+4. **Alert and Reporting**:
+   - Generates annotated frames when an event is detected.
+   - Saves detection details and images into a well-formatted PDF report.
 
-3. Download YOLO weights:
-   - Place the YOLOv8 model weights (e.g., `yolov8n.pt`) in the `models/` directory.
+## Functions
+### Core Functions
+- `calculate_distance(point1, point2)`: Computes the Euclidean distance between two points.
+- ![PDF Report Example](images/near-hand-example.png)
+- `calculate_slope(point1, point2)`: Computes the slope between two points.
+- ![PDF Report Example](images/frnot-face-example.png)
+- `save_to_pdf(frame, person_id, current_time, alert_type, cam)`: Saves detection information and an annotated frame to a PDF report.
+- `process_video_1(video_path, confidence=0.5)`: Processes a video, detects behaviors, and generates reports.
 
-## Usage
-### Running the Detection System
-1. Update the `video_path` variable in `src/video_processing.py` with your video file or camera feed.
-2. Run the script:
-   ```bash
-   python src/video_processing.py
-   ```
-3. The system will process the video feed and generate PDF reports for detected incidents in the `output/` folder.
+### Model Initialization
+- `initialize_models()`: Loads YOLO models for object detection and pose estimation.
+- `start_1()`: Starts the detection process in a separate thread.
 
-### Customizing Detection
-You can modify the detection thresholds, classes, or alert conditions in the configuration file or directly in the source code.
+## Input and Output
+- **Input**: Video files or live camera feeds.
+- **Output**: PDF reports saved locally.
 
-## Examples
-### Example PDF Report
-Each report contains:
-- **Header**: Report title and generation date.
-- **Details**: Alert type, person ID, detection time, and location.
-- **Annotated Image**: Highlighting detected behavior with bounding boxes.
-
-![Sample Report](./docs/sample_report.png)
-
-## Contribution
-Contributions are welcome! Feel free to submit a pull request or open an issue to suggest improvements.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-- **Ultralytics YOLO** for the object detection framework.
-- **OpenCV** for image and video processing.
-- **ReportLab** for creating professional PDF reports.
-
----
-Start enhancing security with AI Surveillance Detection today!
-
+## Example PDF Report
+Each PDF report includes:
+- Header with the report title and generation time.
+- Detection details (alert type, time, person ID, etc.).
+- Annotated image of the detected behavior.
+![PDF Report Example](images/front-face.png)
+## Notes
+- Ensure the YOLO model files (`yolov8s.pt` and `yolov8s-pose.pt`) are available locally and the paths are correctly specified.
+- The `process_video_1` function can be extended to support additional detection scenarios.
