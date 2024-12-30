@@ -40,9 +40,9 @@ This project implements an AI-based surveillance system that uses advanced compu
 ## Functions
 ### Core Functions
 - `calculate_distance(point1, point2)`: Computes the Euclidean distance between two points.
-- ![PDF Report Example](images/near-hand-example.png)
+![PDF Report Example](images/near-hand-example.png)
 - `calculate_slope(point1, point2)`: Computes the slope between two points.
-- ![PDF Report Example](images/frnot-face-example.png)
+![PDF Report Example](images/frnot-face-example.png)
 - `save_to_pdf(frame, person_id, current_time, alert_type, cam)`: Saves detection information and an annotated frame to a PDF report.
 - `process_video_1(video_path, confidence=0.5)`: Processes a video, detects behaviors, and generates reports.
 
